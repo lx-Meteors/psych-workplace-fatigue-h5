@@ -1,0 +1,82 @@
+[
+  {
+    "id": 1,
+    "title": "周一早上闹钟响了三次，你最先做的是？",
+    "options": [
+      { "text": "起床洗漱，路上买个咖啡顶一顶", "scores": { "grind": 3, "mask": 1 } },
+      { "text": "先躺五分钟刷手机，给自己一点缓冲", "scores": { "recover": 3, "drift": 1 } },
+      { "text": "盯着天花板：不想起，但脑子已经在列今日清单", "scores": { "drift": 3, "grind": 1 } },
+      { "text": "秒回工作消息，假装早就在线", "scores": { "mask": 3, "grind": 1 } }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "老板周五下班前丢来一个「下周一早上就要」的活，你会？",
+    "options": [
+      { "text": "今晚先开个头，周末分段啃完", "scores": { "grind": 3, "recover": 1 } },
+      { "text": "先吃饭散步，晚上安静两小时高效收尾", "scores": { "recover": 3, "grind": 1 } },
+      { "text": "嘴上答应，心里一片空白：先拖到周日再想", "scores": { "drift": 3, "mask": 1 } },
+      { "text": "立刻回复「收到没问题」，表情管理满分", "scores": { "mask": 3, "grind": 1 } }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "午休只剩 15 分钟，你会怎么用它？",
+    "options": [
+      { "text": "趴桌上眯一会儿，醒来继续扛", "scores": { "grind": 3, "drift": 1 } },
+      { "text": "下楼买杯喝的，换口气再上楼", "scores": { "recover": 3, "mask": 1 } },
+      { "text": "刷短视频放空，时间像蒸发一样", "scores": { "drift": 3, "recover": 1 } },
+      { "text": "整理桌面和消息，让自己看起来「状态很好」", "scores": { "mask": 3, "drift": 1 } }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "同事在群里 @全员「辛苦大家周末加个班」，你？",
+    "options": [
+      { "text": "默默上线：先把急的先清了", "scores": { "grind": 3, "mask": 1 } },
+      { "text": "先问清边界：哪些必须今天，哪些可挪", "scores": { "recover": 3, "mask": 1 } },
+      { "text": "已读不回，周末像失联一样安静", "scores": { "drift": 3, "recover": 1 } },
+      { "text": "立刻回「好的辛苦啦」，配合度拉满", "scores": { "mask": 3, "grind": 1 } }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "连续加班一周后，朋友约你周末出门，你更可能？",
+    "options": [
+      { "text": "去，但全程脑子里还在复盘工作", "scores": { "grind": 3, "drift": 1 } },
+      { "text": "强制关机：散步、吃饭、睡觉优先", "scores": { "recover": 3, "grind": 1 } },
+      { "text": "婉拒：不是不想去，是提不起劲", "scores": { "drift": 3, "recover": 1 } },
+      { "text": "去，并且拍照打卡：让别人觉得你状态很好", "scores": { "mask": 3, "recover": 1 } }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "开会时被当众追问进度，你当下更贴近哪种反应？",
+    "options": [
+      { "text": "立刻拿出节点和风险清单，扛住场面", "scores": { "grind": 3, "mask": 1 } },
+      { "text": "深呼吸后有条理地说：已完成/卡点/需要支持", "scores": { "recover": 3, "grind": 1 } },
+      { "text": "脑子短路几秒：想说的话堵在喉咙里", "scores": { "drift": 3, "mask": 1 } },
+      { "text": "微笑点头：先把气氛稳住，细节会后补", "scores": { "mask": 3, "drift": 1 } }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "听说团队可能要「优化 / 调整」，你第一反应是？",
+    "options": [
+      { "text": "更拼命交付：用结果把自己钉在船上", "scores": { "grind": 3, "mask": 1 } },
+      { "text": "更新简历但不过度焦虑：先保住节奏与睡眠", "scores": { "recover": 3, "drift": 1 } },
+      { "text": "麻木：好像与自己无关，又像与自己有关", "scores": { "drift": 3, "mask": 1 } },
+      { "text": "对外表现得云淡风轻，私下疯狂打听消息", "scores": { "mask": 3, "grind": 1 } }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "睡前刷手机，你最常停在哪类内容上？",
+    "options": [
+      { "text": "行业资讯、教程、工具测评：越刷越清醒", "scores": { "grind": 3, "recover": 1 } },
+      { "text": "治愈向：萌宠、美食、轻喜剧切片", "scores": { "recover": 3, "drift": 1 } },
+      { "text": "机械下滑：不知道在看什么，只是停不下来", "scores": { "drift": 3, "mask": 1 } },
+      { "text": "朋友圈 / 职场八卦：维护人设顺便收集情报", "scores": { "mask": 3, "recover": 1 } }
+    ]
+  }
+]

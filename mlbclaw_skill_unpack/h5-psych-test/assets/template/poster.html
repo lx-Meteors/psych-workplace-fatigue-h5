@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>生成分享海报</title>
+    <link rel="stylesheet" href="css/style.css">
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+</head>
+<body>
+    <div class="page poster-page">
+        <!-- 海报预览区 -->
+        <div class="poster-preview">
+            <div class="poster" id="poster">
+                <!-- 海报背景 -->
+                <div class="poster-bg"></div>
+                
+                <!-- 海报内容 -->
+                <div class="poster-content">
+                    <!-- 顶部标题 -->
+                    <div class="poster-header">
+                        <h3>{{TEST_TITLE}}</h3>
+                    </div>
+                    
+                    <!-- 结果展示 -->
+                    <div class="poster-result">
+                        <div class="poster-result-image">
+                            <img src="" alt="" id="posterResultImage">
+                        </div>
+                        <h2 class="poster-result-name" id="posterResultName"></h2>
+                        <div class="poster-match">
+                            <span class="poster-percentage" id="posterPercentage"></span>
+                            <span>匹配度</span>
+                        </div>
+                    </div>
+                    
+                    <!-- 结果描述 -->
+                    <p class="poster-description" id="posterDescription"></p>
+                    
+                    <!-- 特征标签 -->
+                    <div class="poster-tags" id="posterTags"></div>
+                    
+                    <!-- 底部 -->
+                    <div class="poster-footer">
+                        <div class="poster-qr">
+                            <img src="assets/images/qr-code.png" alt="扫码测试">
+                            <span>扫码测一测</span>
+                        </div>
+                        <p class="poster-brand">{{BRAND_TEXT}}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 操作按钮 -->
+        <div class="poster-actions">
+            <button class="btn btn-primary" onclick="downloadPoster()">
+                保存海报
+            </button>
+            <button class="btn btn-secondary" onclick="backToResult()">
+                返回结果
+            </button>
+        </div>
+        
+        <!-- 提示 -->
+        <p class="poster-tip">长按图片可以保存到相册</p>
+    </div>
+
+    <script>
+        // 结果数据
+        const results = {{RESULTS_JSON}};
+        
+        // 渲染海报
+        function renderPoster() {
+            const savedResult = JSON.parse(localStorage.getItem('test_result') || '{}');
+            const result = results.find(r => r.id === savedResult.resultId);
+            
+            if (!result) {
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 填充数据
+            document.getElementById('posterResultImage').src = result.image;
+            document.getElementById('posterResultImage').alt = result.name;
+            document.getElementById('posterResultName').textContent = result.name;
+            document.getElementById('posterPercentage').textContent = savedResult.percentage + '%';
+            document.getElementById('posterDescription').textContent = result.shortDescription || result.description;
+            
+            // 渲染标签（最多显示3个）
+            const tagsContainer = document.getElementById('posterTags');
+            const displayTraits = result.traits.slice(0, 3);
+            tagsContainer.innerHTML = displayTraits.map(trait => 
+                `<span class="poster-tag">${trait}</span>`
+            ).join('');
+        }
+        
+        // 下载海报
+        function downloadPoster() {
+            const poster = document.getElementById('poster');
+            
+            html2canvas(poster, {
+                scale: 2,
+                useCORS: true,
+                allowTaint: true,
+                backgroundColor: null
+            }).then(canvas => {
+                // 转换为图片
+                const link = document.createElement('a');
+                link.download = '我的测试结果.png';
+                link.href = canvas.toDataURL('image/png');
+                link.click();
+            }).catch(err => {
+                console.error('生成海报失败:', err);
+                alert('生成海报失败，请截图保存');
+            });
+        }
+        
+        // 返回结果页
+        function backToResult() {
+            window.location.href = 'result.html';
+        }
+        
+        // 页面加载时渲染
+        document.addEventListener('DOMContentLoaded', renderPoster);
+    </script>
+</body>
+</html>

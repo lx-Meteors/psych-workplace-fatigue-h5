@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{TEST_TITLE}}</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page loading-page">
+        <!-- 加载动画 -->
+        <div class="loading-animation">
+            <div class="spinner"></div>
+            <div class="loading-icon">{{LOADING_ICON}}</div>
+        </div>
+        
+        <!-- 加载文字 -->
+        <div class="loading-text">
+            <h2 class="loading-title">正在分析你的答案...</h2>
+            <p class="loading-hint" id="loadingHint">{{LOADING_HINTS}}</p>
+        </div>
+        
+        <!-- 进度条 -->
+        <div class="loading-progress">
+            <div class="loading-progress-bar" id="loadingBar"></div>
+        </div>
+    </div>
+
+    <script>
+        // 加载提示文案
+        const hints = {{LOADING_HINTS_ARRAY}};
+        
+        let hintIndex = 0;
+        let progress = 0;
+        
+        // 更新提示
+        function updateHint() {
+            const hintEl = document.getElementById('loadingHint');
+            hintEl.style.opacity = 0;
+            
+            setTimeout(() => {
+                hintEl.textContent = hints[hintIndex];
+                hintEl.style.opacity = 1;
+                hintIndex = (hintIndex + 1) % hints.length;
+            }, 300);
+        }
+        
+        // 更新进度条
+        function updateProgress() {
+            const bar = document.getElementById('loadingBar');
+            progress += Math.random() * 15 + 5;
+            
+            if (progress >= 100) {
+                progress = 100;
+                bar.style.width = progress + '%';
+                
+                // 跳转到结果页
+                setTimeout(() => {
+                    window.location.href = 'result.html';
+                }, 500);
+            } else {
+                bar.style.width = progress + '%';
+                setTimeout(updateProgress, Math.random() * 300 + 200);
+            }
+        }
+        
+        // 初始化
+        function init() {
+            // 显示第一个提示
+            document.getElementById('loadingHint').textContent = hints[0];
+            
+            // 开始切换提示
+            setInterval(updateHint, 2000);
+            
+            // 开始进度条
+            setTimeout(updateProgress, 500);
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

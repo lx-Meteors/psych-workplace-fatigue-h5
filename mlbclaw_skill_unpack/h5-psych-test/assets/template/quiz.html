@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{TEST_TITLE}}</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page quiz-page">
+        <!-- 顶部进度条 -->
+        <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+            <span class="progress-text"><span id="currentNum">1</span> / {{QUESTION_COUNT}}</span>
+        </div>
+        
+        <!-- 题目区域 -->
+        <div class="question-container" id="questionContainer">
+            <!-- 动态插入题目 -->
+        </div>
+        
+        <!-- 导航按钮 -->
+        <div class="nav-buttons">
+            <button class="btn btn-secondary prev-btn" id="prevBtn" onclick="prevQuestion()" disabled>
+                上一题
+            </button>
+            <button class="btn btn-primary next-btn" id="nextBtn" onclick="nextQuestion()" disabled>
+                下一题
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // 题目数据
+        const questions = {{QUESTIONS_JSON}};
+        
+        // 状态
+        let currentIndex = 0;
+        let answers = [];
+        
+        // 初始化
+        function init() {
+            // 恢复进度
+            const savedProgress = localStorage.getItem('test_progress');
+            const savedAnswers = localStorage.getItem('test_answers');
+            
+            if (savedProgress && savedAnswers) {
+                currentIndex = parseInt(savedProgress);
+                answers = JSON.parse(savedAnswers);
+            }
+            
+            renderQuestion();
+            updateProgress();
+        }
+        
+        // 渲染题目
+        function renderQuestion() {
+            const question = questions[currentIndex];
+            const container = document.getElementById('questionContainer');
+            
+            container.innerHTML = `
+                <div class="question-number">Question ${currentIndex + 1}</div>
+                <h2 class="question-text">${question.text}</h2>
+                ${question.image ? `<div class="question-image"><img src="${question.image}" alt=""></div>` : ''}
+                <div class="options">
+                    ${question.options.map((option, index) => `
+                        <div class="option ${answers[currentIndex] === index ? 'selected' : ''}" 
+                             onclick="selectOption(${index})" 
+                             data-index="${index}">
+                            ${option.image ? `<img src="${option.image}" alt="">` : ''}
+                            <span class="option-text">${option.text}</span>
+                        </div>
+                    `).join('')}
+                </div>
+            `;
+            
+            // 更新按钮状态
+            updateButtons();
+        }
+        
+        // 选择选项
+        function selectOption(index) {
+            answers[currentIndex] = index;
+            
+            // 更新视觉状态
+            document.querySelectorAll('.option').forEach((el, i) => {
+                el.classList.toggle('selected', i === index);
+            });
+            
+            // 保存进度
+            saveProgress();
+            
+            // 更新按钮状态
+            updateButtons();
+            
+            // {{AUTO_ADVANCE}}
+        }
+        
+        // 下一题
+        function nextQuestion() {
+            if (currentIndex < questions.length - 1) {
+                currentIndex++;
+                renderQuestion();
+                updateProgress();
+            } else {
+                // 完成测试，计算结果
+                finishTest();
+            }
+        }
+        
+        // 上一题
+        function prevQuestion() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                renderQuestion();
+                updateProgress();
+            }
+        }
+        
+        // 更新进度条
+        function updateProgress() {
+            const progress = ((currentIndex + 1) / questions.length) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+            document.getElementById('currentNum').textContent = currentIndex + 1;
+        }
+        
+        // 更新按钮状态
+        function updateButtons() {
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            
+            prevBtn.disabled = currentIndex === 0;
+            nextBtn.disabled = answers[currentIndex] === undefined;
+            
+            // 最后一题，按钮文字改为"查看结果"
+            if (currentIndex === questions.length - 1) {
+                nextBtn.textContent = answers[currentIndex] !== undefined ? '查看结果' : '下一题';
+            } else {
+                nextBtn.textContent = '下一题';
+            }
+        }
+        
+        // 保存进度
+        function saveProgress() {
+            localStorage.setItem('test_progress', currentIndex);
+            localStorage.setItem('test_answers', JSON.stringify(answers));
+        }
+        
+        // 完成测试
+        function finishTest() {
+            // 保存答案
+            localStorage.setItem('test_answers', JSON.stringify(answers));
+            localStorage.removeItem('test_progress');
+            
+            // 跳转到加载页
+            window.location.href = 'loading.html';
+        }
+        
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>

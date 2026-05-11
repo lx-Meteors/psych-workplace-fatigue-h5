@@ -1,0 +1,166 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --shadow-glow: 0 24px 80px rgba(99, 102, 241, 0.22);
+}
+
+:root {
+  --primary: #6366F1;
+  --secondary: #0F172A;
+  --accent: #F59E0B;
+  --bg: #F1F5F9;
+
+  color: #0f172a;
+  background: var(--bg);
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button {
+  font: inherit;
+}
+
+.work-gradient {
+  background:
+    radial-gradient(circle at 16% 16%, rgba(99, 102, 241, 0.20), transparent 38%),
+    radial-gradient(circle at 86% 22%, rgba(245, 158, 11, 0.10), transparent 34%),
+    radial-gradient(circle at 72% 78%, rgba(148, 163, 184, 0.16), transparent 36%),
+    linear-gradient(180deg, #f1f5f9 0%, #eef2ff 100%);
+}
+
+.work-grid {
+  background:
+    linear-gradient(rgba(30, 27, 75, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(30, 27, 75, 0.05) 1px, transparent 1px);
+  background-size: 24px 24px;
+  mask-image: radial-gradient(circle at 50% 30%, black 40%, transparent 78%);
+  opacity: 0.7;
+}
+
+.work-noise {
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(99, 102, 241, 0.10), transparent 42%),
+    radial-gradient(circle at 90% 20%, rgba(245, 158, 11, 0.08), transparent 42%),
+    radial-gradient(circle at 50% 90%, rgba(15, 23, 42, 0.06), transparent 42%);
+  mix-blend-mode: multiply;
+  opacity: 0.25;
+}
+
+.coffee-float {
+  background-image:
+    radial-gradient(circle at 12% 18%, rgba(99, 102, 241, 0.18) 0%, transparent 28%),
+    radial-gradient(circle at 78% 22%, rgba(245, 158, 11, 0.14) 0%, transparent 30%),
+    radial-gradient(circle at 30% 70%, rgba(148, 163, 184, 0.14) 0%, transparent 35%),
+    radial-gradient(circle at 86% 78%, rgba(15, 23, 42, 0.08) 0%, transparent 32%),
+    radial-gradient(circle at 45% 35%, rgba(255, 255, 255, 0.28) 0%, transparent 26%);
+  filter: blur(0px);
+  animation: coffeeFloat 12s ease-in-out infinite;
+  opacity: 0.7;
+}
+
+@keyframes coffeeFloat {
+  0%, 100% {
+    transform: translateY(0) translateX(0);
+  }
+  50% {
+    transform: translateY(-10px) translateX(6px);
+  }
+}
+
+.work-poster {
+  background:
+    radial-gradient(circle at 20% 10%, rgba(99, 102, 241, 0.12), transparent 36%),
+    radial-gradient(circle at 86% 80%, rgba(245, 158, 11, 0.10), transparent 36%),
+    linear-gradient(135deg, #ffffff 0%, #eef2ff 55%, #f1f5f9 100%);
+}
+
+.work-card {
+  background: rgba(255, 255, 255, 0.92);
+  border: 1px solid rgba(15, 23, 42, 0.08);
+  box-shadow: 0 22px 70px rgba(15, 23, 42, 0.10);
+  backdrop-filter: blur(10px);
+}
+
+.work-card-strong {
+  background: rgba(255, 255, 255, 0.96);
+  border: 1px solid rgba(15, 23, 42, 0.10);
+  box-shadow:
+    0 30px 80px rgba(15, 23, 42, 0.14),
+    0 0 0 1px rgba(255, 255, 255, 0.6) inset;
+}
+
+.chip {
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+.coffee-bean-divider {
+  height: 16px;
+  background-image:
+    radial-gradient(circle at 20px 8px, rgba(99, 102, 241, 0.28) 22%, transparent 23%),
+    radial-gradient(circle at 56px 8px, rgba(148, 163, 184, 0.26) 22%, transparent 23%),
+    radial-gradient(circle at 92px 8px, rgba(245, 158, 11, 0.24) 22%, transparent 23%),
+    radial-gradient(circle at 128px 8px, rgba(15, 23, 42, 0.18) 22%, transparent 23%);
+  background-repeat: repeat-x;
+  background-size: 152px 16px;
+  opacity: 0.9;
+}
+
+.cta-disabled {
+  filter: grayscale(0.2);
+  opacity: 0.55;
+}
+
+.cta-ready {
+  box-shadow: 0 18px 60px rgba(99, 102, 241, 0.28);
+}
+
+.press {
+  transition: transform 160ms ease, box-shadow 160ms ease, filter 160ms ease;
+}
+.press:hover {
+  transform: translateY(-2px);
+}
+.press:active {
+  transform: translateY(0);
+}
+
+@keyframes floatUpDown {
+  0%, 100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(-10px);
+  }
+}
+
+.work-card.animate-pop {
+  animation: pop 420ms ease-out both;
+}
+
+@keyframes pop {
+  0% {
+    opacity: 0;
+    transform: scale(0.98) translateY(8px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}

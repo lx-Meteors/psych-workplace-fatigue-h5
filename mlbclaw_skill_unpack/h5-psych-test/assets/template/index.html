@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{TEST_TITLE}}</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page home-page">
+        <!-- 装饰元素 -->
+        <div class="decoration decoration-1"></div>
+        <div class="decoration decoration-2"></div>
+        
+        <!-- 主内容 -->
+        <div class="content">
+            <!-- 主题图 -->
+            <div class="hero-image">
+                <img src="assets/images/hero.png" alt="{{TEST_TITLE}}">
+            </div>
+            
+            <!-- 标题 -->
+            <h1 class="title">{{TEST_TITLE}}</h1>
+            
+            <!-- 副标题/描述 -->
+            <p class="subtitle">{{TEST_DESCRIPTION}}</p>
+            
+            <!-- 测试信息 -->
+            <div class="test-info">
+                <span class="info-item">{{QUESTION_COUNT}} 道题</span>
+                <span class="info-item">约 {{TIME_ESTIMATE}} 分钟</span>
+                <span class="info-item">{{RESULT_COUNT}} 种结果</span>
+            </div>
+            
+            <!-- 开始按钮 -->
+            <button class="btn btn-primary start-btn" onclick="startTest()">
+                开始测试
+            </button>
+            
+            <!-- 已有进度提示 -->
+            <div class="continue-hint" id="continueHint" style="display: none;">
+                <span>检测到未完成的测试，</span>
+                <a href="quiz.html">继续答题</a>
+            </div>
+        </div>
+        
+        <!-- 底部 -->
+        <div class="footer">
+            <p>已有 <span class="count">{{PARTICIPANT_COUNT}}</span> 人参与测试</p>
+        </div>
+    </div>
+
+    <script>
+        // 检查是否有未完成的测试
+        function checkProgress() {
+            const progress = localStorage.getItem('test_progress');
+            if (progress) {
+                document.getElementById('continueHint').style.display = 'block';
+            }
+        }
+        
+        // 开始测试
+        function startTest() {
+            // 清除之前的进度
+            localStorage.removeItem('test_progress');
+            localStorage.removeItem('test_answers');
+            
+            // 跳转到答题页
+            window.location.href = 'quiz.html';
+        }
+        
+        // 页面加载时检查进度
+        document.addEventListener('DOMContentLoaded', checkProgress);
+    </script>
+</body>
+</html>

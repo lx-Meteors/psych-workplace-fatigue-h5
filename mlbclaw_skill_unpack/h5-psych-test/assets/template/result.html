@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>{{TEST_TITLE}} - 测试结果</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="page result-page">
+        <!-- 结果卡片 -->
+        <div class="result-card">
+            <!-- 结果标签 -->
+            <div class="result-label">你的测试结果</div>
+            
+            <!-- 结果图片 -->
+            <div class="result-image">
+                <img src="" alt="" id="resultImage">
+            </div>
+            
+            <!-- 结果名称 -->
+            <h1 class="result-name" id="resultName"></h1>
+            
+            <!-- 匹配度 -->
+            <div class="match-percentage">
+                <span class="percentage" id="matchPercentage"></span>
+                <span class="label">匹配度</span>
+            </div>
+            
+            <!-- 结果描述 -->
+            <p class="result-description" id="resultDescription"></p>
+            
+            <!-- 特征标签 -->
+            <div class="trait-tags" id="traitTags"></div>
+            
+            <!-- 详细解析 -->
+            <div class="result-details">
+                <h3>💡 深度解析</h3>
+                <p id="resultAnalysis"></p>
+            </div>
+            
+            <!-- 适合/不适合 -->
+            <div class="compatibility">
+                <div class="compat-section">
+                    <h4>✨ 与你最配</h4>
+                    <p id="bestMatch"></p>
+                </div>
+                <div class="compat-section">
+                    <h4>💥 与你互补</h4>
+                    <p id="complement"></p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 操作按钮 -->
+        <div class="action-buttons">
+            <button class="btn btn-primary share-btn" onclick="showShareOptions()">
+                分享结果
+            </button>
+            <button class="btn btn-secondary retry-btn" onclick="retryTest()">
+                再测一次
+            </button>
+        </div>
+        
+        <!-- 分享弹窗 -->
+        <div class="share-modal" id="shareModal" onclick="hideShareOptions(event)">
+            <div class="share-content" onclick="event.stopPropagation()">
+                <h3>分享你的测试结果</h3>
+                <div class="share-options">
+                    <button class="share-option" onclick="shareToWeChat()">
+                        <span class="icon">💬</span>
+                        <span>微信好友</span>
+                    </button>
+                    <button class="share-option" onclick="shareToMoments()">
+                        <span class="icon">📱</span>
+                        <span>朋友圈</span>
+                    </button>
+                    <button class="share-option" onclick="generatePoster()">
+                        <span class="icon">🖼️</span>
+                        <span>生成海报</span>
+                    </button>
+                    <button class="share-option" onclick="copyLink()">
+                        <span class="icon">🔗</span>
+                        <span>复制链接</span>
+                    </button>
+                </div>
+                <button class="btn btn-secondary close-btn" onclick="hideShareOptions()">关闭</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 结果数据
+        const results = {{RESULTS_JSON}};
+        
+        // 计算结果
+        function calculateResult() {
+            const answers = JSON.parse(localStorage.getItem('test_answers') || '[]');
+            
+            // 计分逻辑
+            const scores = {};
+            results.forEach(r => scores[r.id] = 0);
+            
+            answers.forEach((answerIndex, questionIndex) => {
+                const question = questions[questionIndex];
+                const option = question.options[answerIndex];
+                
+                // 累加分数
+                if (option.scores) {
+                    Object.entries(option.scores).forEach(([resultId, score]) => {
+                        scores[resultId] = (scores[resultId] || 0) + score;
+                    });
+                }
+            });
+            
+            // 找出最高分
+            let maxScore = -1;
+            let resultId = null;
+            
+            Object.entries(scores).forEach(([id, score]) => {
+                if (score > maxScore) {
+                    maxScore = score;
+                    resultId = id;
+                }
+            });
+            
+            // 计算匹配度
+            const totalPossible = answers.length * 3; // 假设每题最高3分
+            const matchPercentage = Math.min(95, Math.round((maxScore / totalPossible) * 100) + 20);
+            
+            return {
+                result: results.find(r => r.id === resultId),
+                percentage: matchPercentage
+            };
+        }
+        
+        // 渲染结果
+        function renderResult() {
+            const { result, percentage } = calculateResult();
+            
+            if (!result) {
+                // 出错，返回首页
+                window.location.href = 'index.html';
+                return;
+            }
+            
+            // 填充数据
+            document.getElementById('resultImage').src = result.image;
+            document.getElementById('resultImage').alt = result.name;
+            document.getElementById('resultName').textContent = result.name;
+            document.getElementById('matchPercentage').textContent = percentage + '%';
+            document.getElementById('resultDescription').textContent = result.description;
+            document.getElementById('resultAnalysis').textContent = result.analysis;
+            document.getElementById('bestMatch').textContent = result.bestMatch;
+            document.getElementById('complement').textContent = result.complement;
+            
+            // 渲染标签
+            const tagsContainer = document.getElementById('traitTags');
+            tagsContainer.innerHTML = result.traits.map(trait => 
+                `<span class="trait-tag">${trait}</span>`
+            ).join('');
+            
+            // 保存结果用于分享
+            localStorage.setItem('test_result', JSON.stringify({
+                resultId: result.id,
+                percentage: percentage
+            }));
+        }
+        
+        // 显示分享选项
+        function showShareOptions() {
+            document.getElementById('shareModal').classList.add('active');
+        }
+        
+        // 隐藏分享选项
+        function hideShareOptions(event) {
+            if (!event || event.target === document.getElementById('shareModal')) {
+                document.getElementById('shareModal').classList.remove('active');
+            }
+        }
+        
+        // 分享到微信
+        function shareToWeChat() {
+            alert('请截图后发送给微信好友');
+        }
+        
+        // 分享到朋友圈
+        function shareToMoments() {
+            alert('请截图后分享到朋友圈');
+        }
+        
+        // 生成海报
+        function generatePoster() {
+            window.location.href = 'poster.html';
+        }
+        
+        // 复制链接
+        function copyLink() {
+            const url = window.location.href.replace('result.html', '');
+            navigator.clipboard.writeText(url).then(() => {
+                alert('链接已复制');
+            });
+        }
+        
+        // 重新测试
+        function retryTest() {
+            localStorage.removeItem('test_answers');
+            localStorage.removeItem('test_result');
+            window.location.href = 'index.html';
+        }
+        
+        // 页面加载时渲染结果
+        document.addEventListener('DOMContentLoaded', renderResult);
+    </script>
+</body>
+</html>
